@@ -1,0 +1,14 @@
+{
+  "schema": "tool-lab/toolchain/v1",
+  "platform": "ios",
+  "sdk_floor": "ios-26.0",
+  "pins": {
+    "xcode_version": "26.0.1",
+    "xcode_build": "17A400",
+    "ios_sdk": "26.0",
+    "swift_language_mode": "6"
+  },
+  "device_family": "iphone-only",
+  "targeted_device_family": "1",
+  "notes": "iPhone-only by user directive 2026-09-15; native iPad support requires explicit opt-in. CI must assert TARGETED_DEVICE_FAMILY=1 in all app-target configurations and the exact Xcode build on Apple runners. Pin is a starting baseline; if the exact build is absent on a runner, that is an environment acceptance blocker, not a silent substitute."
+}

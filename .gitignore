@@ -1,0 +1,23 @@
+# macOS / Xcode
+.DS_Store
+xcuserdata/
+DerivedData/
+build/
+*.xcscmblueprint
+
+# SwiftPM
+.build/
+.swiftpm/
+
+# CI / local artifacts
+*.ipa
+*.dSYM.zip
+*.xcresult/
+analysis/
+
+# Secrets are Actions secrets only — never files in this repo
+*.p8
+*.p12
+*.mobileprovision
+asc-secrets/
+.env
