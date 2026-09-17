@@ -1,0 +1,7 @@
+# Zero-network allowlist — intentionally EMPTY for the MVP.
+#
+# Each non-comment line is a repo-relative Swift source path permitted to use
+# networking APIs (URLSession, Network framework, CFNetwork, MultipeerConnectivity).
+# The Care Label MVP makes no network requests at all; adding an entry here is a
+# deliberate product decision that must be justified in a PR.
+# Enforced by Scripts/zero_network_guard.py from Scripts/ci.sh.
