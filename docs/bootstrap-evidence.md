@@ -78,6 +78,30 @@ app target, the launch UI test, and the built-`Info.plist`
 `UIDeviceFamily == [1]` guard. Those results are recorded on the PR's CI run
 and retained in the `ios-ci-<sha>` artifact — they are not claimed here.
 
+## CI repairs
+
+- Run 35273117220 attempt 1 (PR #8 head `ba91f20`) and post-merge main push run
+  35274304537 both failed identically: `xcrun simctl list devices available
+  --json` timed out at the 30 s budget (hosted-runner CoreSimulator enumeration
+  stall; GitHub Actions status operational, exact toolchain pin measured fine
+  before the stall). The first rerun (attempt 2) passed end-to-end and PR #8
+  merged on that evidence. Because this stall class recurs across
+  repos/runners in this fleet, the CI helpers now carry a bounded
+  one-shot recovery instead of relying on reruns:
+  - `select_simulator.py`: one retry of enumeration with the same 30 s timeout
+    on timeout (nonzero exit still fails immediately), plus an immediate
+    `flush()` after writing the devices JSON (a caught `TimeoutExpired` can
+    otherwise keep the write handle buffered and leave a 0-byte file).
+    Test override env: `CARELABEL_SIMCTL_TIMEOUT_SECONDS`.
+  - `boot_simulator.py`: on a boot/bootstatus **timeout** (not nonzero exit)
+    for a not-yet-booted simulator, one best-effort bounded `simctl shutdown`
+    followed by exactly one boot+bootstatus retry; second timeout re-raises.
+    All timeout budgets unchanged.
+  - Regression tests cover retry sequences, no-second-retry, tolerated
+    shutdown failure, and the empty-file-after-timeout subprocess case
+    (`Scripts/tests/test_select_simulator.py`,
+    `Scripts/tests/test_boot_simulator.py`).
+
 ## Explicit non-claims
 
 - No physical-device, VoiceOver, or signed-archive evidence exists or is claimed.
