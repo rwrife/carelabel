@@ -21,3 +21,7 @@ analysis/
 *.mobileprovision
 asc-secrets/
 .env
+
+# Python
+__pycache__/
+*.pyc

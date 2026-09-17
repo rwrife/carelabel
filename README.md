@@ -73,19 +73,20 @@ This is a standard SwiftUI **iPhone-only** app today (`TARGETED_DEVICE_FAMILY = 
 
 ## Current status & milestones
 
-**Status: documentation + backlog only.** No Xcode project, build, test result, or store artifact exists yet.
+**Status: native bootstrap in flight.** The Xcode project, `CareKit` package, and pinned iOS CI exist in-tree; the authoritative build/test evidence is the pinned macOS CI run for the bootstrap PR (see `docs/bootstrap-evidence.md` for what was verified where).
 
-1. M0 (this repo): scaffold, plan, backlog. ✅
-2. M1: project skeleton + CI + zero-network gate.
+1. M0: scaffold, plan, backlog. ✅
+2. M1: project skeleton + CI + zero-network gate. *(this bootstrap — native CI is the merge gate)*
 3. M2: domain layer — garments, care profiles, ISO symbol semantics, pure-Swift compatibility engine.
 4. M3: primary flows — registry, care editor, symbol reference.
 5. M4: basket builder + conflict UI, wash log.
 6. M5: backup/export/restore, accessibility pass.
 7. M6: signed TestFlight build, release evidence.
 
-## Development quickstart (planned)
+## Development quickstart
 
-- macOS with Xcode pinned per `toolchain.json` (Xcode 26.x, iOS 26 SDK, Swift 6 mode).
-- Open `CareLabel.xcodeproj` (created by M1); build/run the `CareLabel` iPhone simulator target.
-- Unit tests cover the compatibility engine and symbol decoding tables as pure Swift (no UI).
-- iPhone-only is enforced: `TARGETED_DEVICE_FAMILY = 1` in all app-target configurations.
+- macOS with Xcode 26.0.1 (build 17A400, iOS 26 SDK, Swift 6 mode) per `toolchain.json`.
+- Open `CareLabel.xcodeproj`; build/run the `CareLabel` scheme on an iPhone simulator.
+- Pure-domain tests: `swift test --package-path Packages/CareKit` (runs on Linux too, via e.g. `swift:6.1`).
+- Full local CI entrypoint (macOS only): `Scripts/ci.sh <commit-sha>`.
+- Product gates: `python3 Scripts/zero_network_guard.py` (zero-network, allowlist `network_allowlist.txt`) and the iPhone-only checks — `TARGETED_DEVICE_FAMILY = 1` in all app-target configurations, re-verified post-build as `UIDeviceFamily == [1]`.
