@@ -98,9 +98,41 @@ python3 Scripts/boot_simulator.py boot \
   2> >(tee -a "$artifact_dir/simulator-boot.log" >&2)
 
 phase="domain_tests"
+# Issue #2 acceptance criterion: domain package coverage must be reported.
+# We run the pure-Swift CareKit tests with instrumentation, merge the raw
+# profiles, and print a per-file coverage report into the CI artifact log.
+carekit_scratch="$repo_root/build/CareKitScratch"
 xcrun swift test \
   --package-path Packages/CareKit \
+  --scratch-path "$carekit_scratch" \
+  --enable-code-coverage \
   2>&1 | tee "$artifact_dir/domain-tests.log"
+
+phase="domain_coverage_report"
+profraw_files=()
+while IFS= read -r f; do profraw_files+=("$f"); done < <(find "$carekit_scratch" -name '*.profraw' -type f)
+if [[ ${#profraw_files[@]} -eq 0 ]]; then
+  echo "Coverage instrumentation produced no .profraw files under $carekit_scratch" >&2
+  exit 1
+fi
+xcrun llvm-profdata merge -sparse "${profraw_files[@]}" -o "$artifact_dir/carekit.profdata"
+cov_binary="$(find "$carekit_scratch" -path '*.xctest/Contents/MacOS/*' -type f | head -1)"
+if [[ -z "$cov_binary" ]]; then
+  echo "Could not locate CareKit test binary for coverage report" >&2
+  exit 1
+fi
+xcrun llvm-cov report "$cov_binary" \
+  -instr-profile="$artifact_dir/carekit.profdata" \
+  CareKit \
+  2>&1 | tee "$artifact_dir/domain-coverage.log"
+# Fail if the domain sources show zero covered lines — coverage that
+# silently stopped instrumenting must not pass as "reported".
+if ! awk '/CareKit\/Sources/ { lines+=$6 } END { exit (lines+0 > 0) ? 0 : 1 }' \
+  "$artifact_dir/domain-coverage.log"; then
+  echo "Coverage report contains no covered lines for CareKit sources" >&2
+  exit 1
+fi
+echo "Domain coverage report written to domain-coverage.log"
 
 phase="app_build"
 xcodebuild build \
