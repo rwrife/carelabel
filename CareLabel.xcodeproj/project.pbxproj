@@ -10,6 +10,8 @@
 		A10000000000000000000102 /* BootstrapHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000202 /* BootstrapHomeView.swift */; };
 		A10000000000000000000103 /* CareLabelLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000203 /* CareLabelLaunchTests.swift */; };
 		A10000000000000000000104 /* CareKit in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000801 /* CareKit */; };
+		A10000000000000000000105 /* CareStore in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000802 /* CareStore */; };
+		A10000000000000000000106 /* UIKitPhotoDownsampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000206 /* UIKitPhotoDownsampler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,6 +28,7 @@
 		A10000000000000000000201 /* CareLabelApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CareLabelApp.swift; sourceTree = "<group>"; };
 		A10000000000000000000202 /* BootstrapHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BootstrapHomeView.swift; sourceTree = "<group>"; };
 		A10000000000000000000203 /* CareLabelLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CareLabelLaunchTests.swift; sourceTree = "<group>"; };
+		A10000000000000000000206 /* UIKitPhotoDownsampler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitPhotoDownsampler.swift; sourceTree = "<group>"; };
 		A10000000000000000000204 /* CareLabel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CareLabel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10000000000000000000205 /* CareLabelUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CareLabelUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -34,7 +37,7 @@
 		A10000000000000000000401 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
-			files = (A10000000000000000000104 /* CareKit in Frameworks */,);
+			files = (A10000000000000000000104 /* CareKit in Frameworks */, A10000000000000000000105 /* CareStore in Frameworks */,);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		A10000000000000000000402 /* Frameworks */ = {
@@ -60,6 +63,7 @@
 			children = (
 				A10000000000000000000201 /* CareLabelApp.swift */,
 				A10000000000000000000202 /* BootstrapHomeView.swift */,
+				A10000000000000000000206 /* UIKitPhotoDownsampler.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -93,7 +97,7 @@
 			buildRules = ();
 			dependencies = ();
 			name = CareLabel;
-			packageProductDependencies = (A10000000000000000000801 /* CareKit */,);
+			packageProductDependencies = (A10000000000000000000801 /* CareKit */, A10000000000000000000802 /* CareStore */,);
 			productName = CareLabel;
 			productReference = A10000000000000000000204 /* CareLabel.app */;
 			productType = "com.apple.product-type.application";
@@ -134,7 +138,7 @@
 			knownRegions = (en, Base,);
 			mainGroup = A10000000000000000000500;
 			minimizedProjectReferenceProxies = 1;
-			packageReferences = (A10000000000000000000800 /* XCLocalSwiftPackageReference "Packages/CareKit" */,);
+			packageReferences = (A10000000000000000000800 /* XCLocalSwiftPackageReference "Packages/CareKit" */, A10000000000000000000803 /* XCLocalSwiftPackageReference "Packages/CareStore" */,);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A10000000000000000000503 /* Products */;
 			projectDirPath = "";
@@ -158,6 +162,7 @@
 			files = (
 				A10000000000000000000101 /* CareLabelApp.swift in Sources */,
 				A10000000000000000000102 /* BootstrapHomeView.swift in Sources */,
+				A10000000000000000000106 /* UIKitPhotoDownsampler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,10 +263,12 @@
 
 /* Begin XCLocalSwiftPackageReference section */
 		A10000000000000000000800 /* XCLocalSwiftPackageReference "Packages/CareKit" */ = {isa = XCLocalSwiftPackageReference; relativePath = Packages/CareKit;};
+		A10000000000000000000803 /* XCLocalSwiftPackageReference "Packages/CareStore" */ = {isa = XCLocalSwiftPackageReference; relativePath = Packages/CareStore;};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		A10000000000000000000801 /* CareKit */ = {isa = XCSwiftPackageProductDependency; package = A10000000000000000000800 /* XCLocalSwiftPackageReference "Packages/CareKit" */; productName = CareKit;};
+		A10000000000000000000802 /* CareStore */ = {isa = XCSwiftPackageProductDependency; package = A10000000000000000000803 /* XCLocalSwiftPackageReference "Packages/CareStore" */; productName = CareStore;};
 /* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A10000000000000000000000 /* Project object */;
