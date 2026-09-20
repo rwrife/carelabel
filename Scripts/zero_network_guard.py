@@ -44,7 +44,13 @@ def collect_swift_sources(repo_root: Path, scan_roots=tuple(DEFAULT_SCAN_ROOTS))
     for root in scan_roots:
         base = repo_root / root
         if base.is_dir():
-            sources.extend(sorted(base.rglob("*.swift")))
+            for source in sorted(base.rglob("*.swift")):
+                # Skip SwiftPM build directories: `.build` contains fetched
+                # third-party checkouts, which are not shipped first-party
+                # sources (dependencies are vetted by review, not the guard).
+                if ".build" in source.relative_to(base).parts:
+                    continue
+                sources.append(source)
     return sources
 
 

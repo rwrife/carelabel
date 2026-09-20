@@ -62,6 +62,18 @@ class ViolationTests(unittest.TestCase):
         self.write("scripts-support/Tool.swift", "URLSession.shared\n")
         self.assertEqual(find_violations(self.root, set()), [])
 
+    def test_swiftpm_build_directories_are_skipped(self):
+        # Fetched dependency checkouts under .build are not first-party
+        # sources; the guard must not scan them (issue #4 added GRDB).
+        self.write("Packages/CareStore/.build/checkouts/GRDB/GRDB/Dependency.swift", "URLSession.shared\n")
+        self.write("Packages/CareStore/Sources/CareStore/Real.swift", "import Foundation\n")
+        self.assertEqual(find_violations(self.root, set()), [])
+        # First-party sources under the same root are still scanned.
+        self.write("Packages/CareStore/Sources/CareStore/Sneaky.swift", "URLSession.shared\n")
+        violations = find_violations(self.root, set())
+        self.assertEqual(len(violations), 1)
+        self.assertIn("Packages/CareStore/Sources/CareStore/Sneaky.swift", violations[0])
+
 
 if __name__ == "__main__":
     unittest.main()

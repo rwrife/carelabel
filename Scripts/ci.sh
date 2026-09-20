@@ -134,6 +134,43 @@ if ! awk '/CareKit\/Sources/ { lines+=$6 } END { exit (lines+0 > 0) ? 0 : 1 }' \
 fi
 echo "Domain coverage report written to domain-coverage.log"
 
+phase="data_layer_tests"
+# Issue #4 acceptance criterion: the CareStore data layer (GRDB persistence,
+# migrations against the committed v1 fixture, photo store) is unit-tested in
+# CI. GRDB's test fetch happens at dependency-resolution time on the runner;
+# the shipped app still contains zero networking code (enforced by the
+# zero-network gate above, which skips SwiftPM .build directories).
+carestore_scratch="$repo_root/build/CareStoreScratch"
+xcrun swift test \
+  --package-path Packages/CareStore \
+  --scratch-path "$carestore_scratch" \
+  --enable-code-coverage \
+  2>&1 | tee "$artifact_dir/data-layer-tests.log"
+
+phase="data_layer_coverage_report"
+carestore_profraw=()
+while IFS= read -r f; do carestore_profraw+=("$f"); done < <(find "$carestore_scratch" -name '*.profraw' -type f)
+if [[ ${#carestore_profraw[@]} -eq 0 ]]; then
+  echo "CareStore coverage instrumentation produced no .profraw files under $carestore_scratch" >&2
+  exit 1
+fi
+xcrun llvm-profdata merge -sparse "${carestore_profraw[@]}" -o "$artifact_dir/carestore.profdata"
+carestore_cov_binary="$(find "$carestore_scratch" -path '*.xctest/Contents/MacOS/*' -type f | head -1)"
+if [[ -z "$carestore_cov_binary" ]]; then
+  echo "Could not locate CareStore test binary for coverage report" >&2
+  exit 1
+fi
+xcrun llvm-cov report "$carestore_cov_binary" \
+  -instr-profile="$artifact_dir/carestore.profdata" \
+  CareStore \
+  2>&1 | tee "$artifact_dir/data-layer-coverage.log"
+if ! awk '/CareStore\/Sources/ { lines+=$6 } END { exit (lines+0 > 0) ? 0 : 1 }' \
+  "$artifact_dir/data-layer-coverage.log"; then
+  echo "Coverage report contains no covered lines for CareStore sources" >&2
+  exit 1
+fi
+echo "Data layer coverage report written to data-layer-coverage.log"
+
 phase="app_build"
 xcodebuild build \
   -project CareLabel.xcodeproj \
