@@ -116,7 +116,7 @@ if [[ ${#profraw_files[@]} -eq 0 ]]; then
   exit 1
 fi
 xcrun llvm-profdata merge -sparse "${profraw_files[@]}" -o "$artifact_dir/carekit.profdata"
-cov_binary="$(find "$carekit_scratch" -path '*.xctest/Contents/MacOS/*' -type f | head -1)"
+cov_binary="$(find "$carekit_scratch" -path '*.xctest/Contents/MacOS/*' ! -path '*.dSYM/*' -type f | head -1)"
 if [[ -z "$cov_binary" ]]; then
   echo "Could not locate CareKit test binary for coverage report" >&2
   exit 1
@@ -155,7 +155,7 @@ if [[ ${#carestore_profraw[@]} -eq 0 ]]; then
   exit 1
 fi
 xcrun llvm-profdata merge -sparse "${carestore_profraw[@]}" -o "$artifact_dir/carestore.profdata"
-carestore_cov_binary="$(find "$carestore_scratch" -path '*.xctest/Contents/MacOS/*' -type f | head -1)"
+carestore_cov_binary="$(find "$carestore_scratch" -path '*.xctest/Contents/MacOS/*' ! -path '*.dSYM/*' -type f | head -1)"
 if [[ -z "$carestore_cov_binary" ]]; then
   echo "Could not locate CareStore test binary for coverage report" >&2
   exit 1
