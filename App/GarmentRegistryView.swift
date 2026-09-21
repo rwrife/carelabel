@@ -207,11 +207,13 @@ struct GarmentRow: View {
 
 /// Tiny in-memory cache so list rows don't re-read photo files every render.
 @MainActor
-enum RegistryThumbnailCache {
+final class RegistryThumbnailCache {
     static let shared = RegistryThumbnailCache()
     private var cache: [String: Data] = [:]
     /// Injected by the app root; reads through the photo store seam.
     var reader: ((String) -> Data?)?
+
+    private init() {}
 
     func data(named fileName: String) -> Data? {
         if let cached = cache[fileName] { return cached }
