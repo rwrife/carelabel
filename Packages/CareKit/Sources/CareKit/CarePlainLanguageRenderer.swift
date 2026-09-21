@@ -29,7 +29,10 @@ public enum CarePlainLanguageRenderer {
         return rules
     }
 
-    static func washRule(_ wash: CareWash) -> String {
+    // Issue #5: the per-axis rule renderers are public so the care editor can
+    // summarize each axis row and the plain-language preview reuses the exact
+    // sentences `rules(for:)` produces (single source of truth).
+    public static func washRule(_ wash: CareWash) -> String {
         switch wash {
         case .unknown: unknownAxisRule
         case .doNotWash: "Do not wash at home"
@@ -43,7 +46,7 @@ public enum CarePlainLanguageRenderer {
         }
     }
 
-    static func bleachRule(_ bleach: CareBleach) -> String {
+    public static func bleachRule(_ bleach: CareBleach) -> String {
         switch bleach {
         case .unknown: unknownAxisRule
         case .allowed(.anyBleach): "Any bleach may be used"
@@ -52,7 +55,7 @@ public enum CarePlainLanguageRenderer {
         }
     }
 
-    static func dryRule(_ dry: CareDry) -> String {
+    public static func dryRule(_ dry: CareDry) -> String {
         switch dry {
         case .unknown: unknownAxisRule
         case let .tumble(heat):
@@ -70,7 +73,7 @@ public enum CarePlainLanguageRenderer {
         }
     }
 
-    static func ironRule(_ iron: CareIron) -> String {
+    public static func ironRule(_ iron: CareIron) -> String {
         switch iron {
         case .unknown: unknownAxisRule
         case .doNotIron: "Do not iron"
@@ -78,7 +81,7 @@ public enum CarePlainLanguageRenderer {
         }
     }
 
-    static func professionalRule(_ professional: CareProfessional) -> String {
+    public static func professionalRule(_ professional: CareProfessional) -> String {
         switch professional {
         case .unknown: unknownAxisRule
         case .requires(.dryCleanAnySolvent): "Dry clean professionally (any solvent)"
@@ -89,7 +92,7 @@ public enum CarePlainLanguageRenderer {
         }
     }
 
-    static func prohibitionRule(_ prohibition: CareProhibition) -> String {
+    public static func prohibitionRule(_ prohibition: CareProhibition) -> String {
         switch prohibition {
         case .doNotWash: "Prohibited: do not wash"
         case .doNotBleach: "Prohibited: do not bleach"

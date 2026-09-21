@@ -7,11 +7,18 @@
 
 /* Begin PBXBuildFile section */
 		A10000000000000000000101 /* CareLabelApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000201 /* CareLabelApp.swift */; };
-		A10000000000000000000102 /* BootstrapHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000202 /* BootstrapHomeView.swift */; };
 		A10000000000000000000103 /* CareLabelLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000203 /* CareLabelLaunchTests.swift */; };
 		A10000000000000000000104 /* CareKit in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000801 /* CareKit */; };
 		A10000000000000000000105 /* CareStore in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000802 /* CareStore */; };
 		A10000000000000000000106 /* UIKitPhotoDownsampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000206 /* UIKitPhotoDownsampler.swift */; };
+		A10000000000000000000107 /* GarmentRegistryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000207 /* GarmentRegistryModel.swift */; };
+		A10000000000000000000108 /* GarmentRegistryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000208 /* GarmentRegistryView.swift */; };
+		A10000000000000000000109 /* GarmentEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000209 /* GarmentEditorView.swift */; };
+		A10000000000000000000110 /* GarmentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000210 /* GarmentDetailView.swift */; };
+		A10000000000000000000111 /* CareAxisEditors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000211 /* CareAxisEditors.swift */; };
+		A10000000000000000000112 /* SymbolReferenceSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000212 /* SymbolReferenceSheet.swift */; };
+		A10000000000000000000113 /* TestPhotoSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000213 /* TestPhotoSource.swift */; };
+		A10000000000000000000114 /* CareLabelRegistryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000214 /* CareLabelRegistryUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,9 +33,16 @@
 
 /* Begin PBXFileReference section */
 		A10000000000000000000201 /* CareLabelApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CareLabelApp.swift; sourceTree = "<group>"; };
-		A10000000000000000000202 /* BootstrapHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BootstrapHomeView.swift; sourceTree = "<group>"; };
 		A10000000000000000000203 /* CareLabelLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CareLabelLaunchTests.swift; sourceTree = "<group>"; };
 		A10000000000000000000206 /* UIKitPhotoDownsampler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitPhotoDownsampler.swift; sourceTree = "<group>"; };
+		A10000000000000000000207 /* GarmentRegistryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GarmentRegistryModel.swift; sourceTree = "<group>"; };
+		A10000000000000000000208 /* GarmentRegistryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GarmentRegistryView.swift; sourceTree = "<group>"; };
+		A10000000000000000000209 /* GarmentEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GarmentEditorView.swift; sourceTree = "<group>"; };
+		A10000000000000000000210 /* GarmentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GarmentDetailView.swift; sourceTree = "<group>"; };
+		A10000000000000000000211 /* CareAxisEditors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CareAxisEditors.swift; sourceTree = "<group>"; };
+		A10000000000000000000212 /* SymbolReferenceSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolReferenceSheet.swift; sourceTree = "<group>"; };
+		A10000000000000000000213 /* TestPhotoSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPhotoSource.swift; sourceTree = "<group>"; };
+		A10000000000000000000214 /* CareLabelRegistryUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CareLabelRegistryUITests.swift; sourceTree = "<group>"; };
 		A10000000000000000000204 /* CareLabel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CareLabel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10000000000000000000205 /* CareLabelUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CareLabelUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -62,7 +76,13 @@
 			isa = PBXGroup;
 			children = (
 				A10000000000000000000201 /* CareLabelApp.swift */,
-				A10000000000000000000202 /* BootstrapHomeView.swift */,
+				A10000000000000000000207 /* GarmentRegistryModel.swift */,
+				A10000000000000000000208 /* GarmentRegistryView.swift */,
+				A10000000000000000000209 /* GarmentEditorView.swift */,
+				A10000000000000000000210 /* GarmentDetailView.swift */,
+				A10000000000000000000211 /* CareAxisEditors.swift */,
+				A10000000000000000000212 /* SymbolReferenceSheet.swift */,
+				A10000000000000000000213 /* TestPhotoSource.swift */,
 				A10000000000000000000206 /* UIKitPhotoDownsampler.swift */,
 			);
 			path = App;
@@ -70,7 +90,10 @@
 		};
 		A10000000000000000000502 /* UITests */ = {
 			isa = PBXGroup;
-			children = (A10000000000000000000203 /* CareLabelLaunchTests.swift */,);
+			children = (
+				A10000000000000000000203 /* CareLabelLaunchTests.swift */,
+				A10000000000000000000214 /* CareLabelRegistryUITests.swift */,
+			);
 			path = UITests;
 			sourceTree = "<group>";
 		};
@@ -161,7 +184,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				A10000000000000000000101 /* CareLabelApp.swift in Sources */,
-				A10000000000000000000102 /* BootstrapHomeView.swift in Sources */,
+				A10000000000000000000107 /* GarmentRegistryModel.swift in Sources */,
+				A10000000000000000000108 /* GarmentRegistryView.swift in Sources */,
+				A10000000000000000000109 /* GarmentEditorView.swift in Sources */,
+				A10000000000000000000110 /* GarmentDetailView.swift in Sources */,
+				A10000000000000000000111 /* CareAxisEditors.swift in Sources */,
+				A10000000000000000000112 /* SymbolReferenceSheet.swift in Sources */,
+				A10000000000000000000113 /* TestPhotoSource.swift in Sources */,
 				A10000000000000000000106 /* UIKitPhotoDownsampler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -169,7 +198,10 @@
 		A10000000000000000000702 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
-			files = (A10000000000000000000103 /* CareLabelLaunchTests.swift in Sources */,);
+			files = (
+				A10000000000000000000103 /* CareLabelLaunchTests.swift in Sources */,
+				A10000000000000000000114 /* CareLabelRegistryUITests.swift in Sources */,
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
