@@ -144,7 +144,6 @@ struct GarmentEditorView: View {
                     // `PhotoStore.importPhoto` downscale seam either way.
                     PhotosPicker(
                         selection: $photoItem,
-                        selectionBehavior: .single,
                         matching: .images
                     ) {
                         Label("Add photo", systemImage: "photo.on.rectangle")
