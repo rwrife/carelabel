@@ -24,6 +24,21 @@ final class CareLabelRegistryUITests: XCTestCase {
         app.descendants(matching: .any)[identifier].firstMatch
     }
 
+    /// Waits for an element, scrolling the screen upward while it is absent.
+    /// A SwiftUI `Form` renders lazily: controls below the fold may not exist
+    /// in the accessibility hierarchy at all until scrolled into view, so a
+    /// plain waitForExistence on them can never succeed.
+    @discardableResult
+    private func waitForElement(_ element: XCUIElement, timeout: TimeInterval = 10) -> Bool {
+        if element.waitForExistence(timeout: 2) { return true }
+        let deadline = Date().addingTimeInterval(timeout)
+        while Date() < deadline {
+            app.swipeUp()
+            if element.waitForExistence(timeout: 2) { return true }
+        }
+        return false
+    }
+
     /// Opens the editor via the toolbar + button and returns once the form is up.
     private func openAddEditor() {
         let addButton = app.buttons["registry.add.toolbar"]
@@ -53,7 +68,7 @@ final class CareLabelRegistryUITests: XCTestCase {
     /// Opens one care-axis mode picker (menu style) by its identifier.
     private func openAxisPicker(_ identifier: String) {
         let picker = anyElement(identifier)
-        XCTAssertTrue(picker.waitForExistence(timeout: 5), "picker \(identifier) not visible")
+        XCTAssertTrue(waitForElement(picker), "picker \(identifier) not visible")
         if !picker.isHittable { app.swipeUp() }
         picker.firstMatch.tap()
     }
@@ -81,7 +96,7 @@ final class CareLabelRegistryUITests: XCTestCase {
 
     /// Empty state shows; add-garment happy path lands a row on the list.
     func testAddGarmentFromEmptyState() throws {
-        XCTAssertTrue(app.otherElements["registry.empty"].waitForExistence(timeout: 10))
+        XCTAssertTrue(waitForElement(anyElement("registry.empty")))
 
         openAddEditor()
         typeGarmentName("Blue sweater")
@@ -113,9 +128,9 @@ final class CareLabelRegistryUITests: XCTestCase {
         )
 
         // Symbol reference sheet for the wash family.
-        let sheetLink = app.staticTexts["Symbol reference — Wash"]
+        let sheetLink = anyElement("axis.sheet.wash")
+        XCTAssertTrue(waitForElement(sheetLink), "wash symbol link not visible")
         if !sheetLink.isHittable { app.swipeUp() }
-        XCTAssertTrue(sheetLink.waitForExistence(timeout: 5))
         sheetLink.tap()
 
         XCTAssertTrue(anyElement("sheet.wash").waitForExistence(timeout: 5))
@@ -124,8 +139,13 @@ final class CareLabelRegistryUITests: XCTestCase {
         XCTAssertTrue(symbolRow.label.contains("wash tub with a hand dipping into it"))
         XCTAssertTrue(symbolRow.label.contains("Hand wash only"))
 
-        // Back to the editor, save, and verify the registry summary updated.
-        app.navigationBars.buttons.firstMatch.tap()
+        // Back to the editor. The sheet's nav bar also hosts Cancel/Save, so
+        // match ONLY the back button (labeled "Back" or the parent title).
+        let backButton = app.navigationBars.buttons.matching(
+            NSPredicate(format: "label == %@ OR label CONTAINS %@", "Back", "Add Garment")
+        ).firstMatch
+        XCTAssertTrue(backButton.waitForExistence(timeout: 5), "symbol sheet back button not found")
+        backButton.tap()
         saveEditor()
 
         XCTAssertTrue(app.staticTexts["Wool cardigan"].waitForExistence(timeout: 10))
@@ -187,7 +207,7 @@ final class CareLabelRegistryUITests: XCTestCase {
         XCTAssertTrue(confirm.waitForExistence(timeout: 5))
         confirm.tap()
 
-        XCTAssertTrue(app.otherElements["registry.empty"].waitForExistence(timeout: 10))
+        XCTAssertTrue(waitForElement(anyElement("registry.empty"), timeout: 10))
     }
 
     /// Search filters by name and by category display name.

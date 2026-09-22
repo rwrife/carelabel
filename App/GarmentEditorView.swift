@@ -106,6 +106,7 @@ struct GarmentEditorView: View {
         Section("Garment") {
             TextField("Name (e.g. Blue wool sweater)", text: $name)
                 .focused($nameFocused)
+                .onSubmit { nameFocused = false } // Return dismisses the keyboard
                 .accessibilityIdentifier("editor.name")
             Picker("Category", selection: $category) {
                 ForEach(GarmentCategory.allCases, id: \.self) { cat in

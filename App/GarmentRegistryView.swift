@@ -147,6 +147,10 @@ struct GarmentRegistryView: View {
                 .accessibilityIdentifier("registry.empty.add")
             }
         }
+        // Make the empty state an explicit accessibility GROUP so it exists
+        // as a queryable element (CI XCUITest: an identifier on a bare
+        // ContentUnavailableView is not exposed as an "other" element).
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("registry.empty")
     }
 }
