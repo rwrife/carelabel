@@ -15,11 +15,11 @@ final class CareLabelLaunchTests: XCTestCase {
         app.launch()
 
         XCTAssertTrue(app.navigationBars["My Garments"].waitForExistence(timeout: 10))
-        // The empty state is an accessibility group — query it as .any, not
-        // .otherElements (SwiftUI groups surface as .group, not .other).
+        // The empty state is asserted by its visible text: ContentUnavailableView
+        // does not bridge accessibilityIdentifiers into the XCUITest hierarchy
+        // (proven by CI runs 35647411314 / 35777234043).
         XCTAssertTrue(
-            app.descendants(matching: .any)["registry.empty"]
-                .firstMatch.waitForExistence(timeout: 5)
+            app.staticTexts["No garments yet"].waitForExistence(timeout: 10)
         )
     }
 }

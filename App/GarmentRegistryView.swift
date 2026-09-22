@@ -147,10 +147,9 @@ struct GarmentRegistryView: View {
                 .accessibilityIdentifier("registry.empty.add")
             }
         }
-        // Make the empty state an explicit accessibility GROUP so it exists
-        // as a queryable element (CI XCUITest: an identifier on a bare
-        // ContentUnavailableView is not exposed as an "other" element).
-        .accessibilityElement(children: .contain)
+        // NOTE: UI tests assert this state via its visible text — SwiftUI does
+        // not bridge `accessibilityIdentifier` on ContentUnavailableView into
+        // the XCUITest hierarchy (CI runs 35647411314 / 35777234043).
         .accessibilityIdentifier("registry.empty")
     }
 }

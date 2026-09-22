@@ -39,6 +39,17 @@ final class CareLabelRegistryUITests: XCTestCase {
         return false
     }
 
+    /// Registry empty state, by its visible text. CI evidence (runs
+    /// 35647411314 / 35777234043): the `registry.empty` identifier never
+    /// surfaces (ContentUnavailableView does not bridge identifiers), while
+    /// its label text always does.
+    private func assertRegistryEmpty(timeout: TimeInterval = 10) {
+        XCTAssertTrue(
+            waitForElement(app.staticTexts["No garments yet"], timeout: timeout),
+            "empty state not visible"
+        )
+    }
+
     /// Opens the editor via the toolbar + button and returns once the form is up.
     private func openAddEditor() {
         let addButton = app.buttons["registry.add.toolbar"]
@@ -65,12 +76,31 @@ final class CareLabelRegistryUITests: XCTestCase {
         save.tap()
     }
 
-    /// Opens one care-axis mode picker (menu style) by its identifier.
+    /// Opens one care-axis mode picker by its identifier, falling back to the
+    /// picker's visible value text. CI evidence (run 35777234043): SwiftUI
+    /// menu-style Pickers and container-type views do not reliably surface
+    /// their `accessibilityIdentifier` in the XCUITest hierarchy, but their
+    /// visible text always does. All five axes default to the value
+    /// "Not recorded", and the wash axis is the FIRST one in the form, so
+    /// firstMatch disambiguates for the only picker the tests exercise.
     private func openAxisPicker(_ identifier: String) {
         let picker = anyElement(identifier)
-        XCTAssertTrue(waitForElement(picker), "picker \(identifier) not visible")
-        if !picker.isHittable { app.swipeUp() }
-        picker.firstMatch.tap()
+        if waitForElement(picker, timeout: 4) {
+            if !picker.isHittable { app.swipeUp() }
+            picker.firstMatch.tap()
+            return
+        }
+        // Return toward the top so the FIRST visible "Not recorded" value is
+        // unambiguously the wash axis (the first axis in the form).
+        app.swipeDown()
+        app.swipeDown()
+        // Menu pickers expose the current value either in `value` or merged
+        // into `label` depending on presentation — match either.
+        let valueText = app.descendants(matching: .any).matching(
+            NSPredicate(format: "value ==[c] %@ OR label CONTAINS[c] %@", "Not recorded", "not recorded")
+        ).firstMatch
+        XCTAssertTrue(waitForElement(valueText), "picker \(identifier) not visible")
+        valueText.tap()
     }
 
     private func selectPickerOption(_ option: String) {
@@ -96,7 +126,7 @@ final class CareLabelRegistryUITests: XCTestCase {
 
     /// Empty state shows; add-garment happy path lands a row on the list.
     func testAddGarmentFromEmptyState() throws {
-        XCTAssertTrue(waitForElement(anyElement("registry.empty")))
+        assertRegistryEmpty()
 
         openAddEditor()
         typeGarmentName("Blue sweater")
@@ -127,16 +157,31 @@ final class CareLabelRegistryUITests: XCTestCase {
             "preview did not update"
         )
 
-        // Symbol reference sheet for the wash family.
+        // Symbol reference sheet for the wash family. Prefer the identifier,
+        // fall back to the link's visible label text (same hierarchy caveat).
         let sheetLink = anyElement("axis.sheet.wash")
-        XCTAssertTrue(waitForElement(sheetLink), "wash symbol link not visible")
-        if !sheetLink.isHittable { app.swipeUp() }
-        sheetLink.tap()
+        var link = sheetLink
+        if !waitForElement(sheetLink, timeout: 4) {
+            let linkText = app.descendants(matching: .any).matching(
+                NSPredicate(format: "label CONTAINS %@", "Symbol reference — Wash")
+            ).firstMatch
+            XCTAssertTrue(waitForElement(linkText), "wash symbol link not visible")
+            link = linkText
+        }
+        if !link.isHittable { app.swipeUp() }
+        link.tap()
 
-        XCTAssertTrue(anyElement("sheet.wash").waitForExistence(timeout: 5))
-        let symbolRow = anyElement("symbol.row.hand-wash")
-        XCTAssertTrue(symbolRow.waitForExistence(timeout: 5))
-        XCTAssertTrue(symbolRow.label.contains("wash tub with a hand dipping into it"))
+        // Sheet arrived: assert by nav title (identifier bridging on a List
+        // is not proven in CI). The hand-wash row is asserted by its
+        // VoiceOver label text — notation + meaning — not its identifier.
+        XCTAssertTrue(
+            app.navigationBars["Wash symbols"].waitForExistence(timeout: 10),
+            "wash symbol sheet did not open"
+        )
+        let symbolRow = app.descendants(matching: .any).matching(
+            NSPredicate(format: "label CONTAINS %@", "wash tub with a hand dipping into it")
+        ).firstMatch
+        XCTAssertTrue(waitForElement(symbolRow, timeout: 8), "hand-wash symbol row not visible")
         XCTAssertTrue(symbolRow.label.contains("Hand wash only"))
 
         // Back to the editor. The sheet's nav bar also hosts Cancel/Save, so
@@ -207,7 +252,7 @@ final class CareLabelRegistryUITests: XCTestCase {
         XCTAssertTrue(confirm.waitForExistence(timeout: 5))
         confirm.tap()
 
-        XCTAssertTrue(waitForElement(anyElement("registry.empty"), timeout: 10))
+        XCTAssertTrue(waitForElement(app.staticTexts["No garments yet"], timeout: 10))
     }
 
     /// Search filters by name and by category display name.
