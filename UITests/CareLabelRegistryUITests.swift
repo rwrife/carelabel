@@ -189,6 +189,10 @@ final class CareLabelRegistryUITests: XCTestCase {
         // Sheet arrived: assert by nav title (identifier bridging on a List
         // is not proven in CI). The hand-wash row is asserted by its
         // VoiceOver label text — notation + meaning — not its identifier.
+        // Generous scroll budget (CI run 35782956055 attempt 2): the sheet is
+        // a page sheet — the FIRST swipeUp expands the detent instead of
+        // scrolling — and the row is #19 of 21 in a virtualized List, so it
+        // needs the expansion swipe plus a couple of real scrolls to mount.
         XCTAssertTrue(
             app.navigationBars["Wash symbols"].waitForExistence(timeout: 10),
             "wash symbol sheet did not open"
@@ -196,7 +200,7 @@ final class CareLabelRegistryUITests: XCTestCase {
         let symbolRow = app.descendants(matching: .any).matching(
             NSPredicate(format: "label CONTAINS %@", "wash tub with a hand dipping into it")
         ).firstMatch
-        XCTAssertTrue(waitForElement(symbolRow, timeout: 8), "hand-wash symbol row not visible")
+        XCTAssertTrue(waitForElement(symbolRow, timeout: 24), "hand-wash symbol row not visible")
         XCTAssertTrue(symbolRow.label.contains("Hand wash only"))
 
         // Back to the editor. The sheet's nav bar also hosts Cancel/Save, so
