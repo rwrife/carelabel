@@ -173,6 +173,11 @@ struct GarmentEditorView: View {
     private var careAxesSection: some View {
         // Each axis editor carries its own Section; a Group keeps them
         // siblings inside the Form.
+        // NOTE: deliberately NO accessibilityIdentifier on this Group — CI
+        // evidence (run 35780364211) shows an identifier on a container of
+        // Sections materializes ONE aggregated StaticText in the XCUITest
+        // hierarchy that shadows the pickers inside it (a tap on it opens
+        // nothing). Leaf-level identifiers only.
         Group {
             WashAxisEditor(profile: $profile)
             BleachAxisEditor(profile: $profile)
@@ -180,10 +185,11 @@ struct GarmentEditorView: View {
             IronAxisEditor(profile: $profile)
             ProfessionalAxisEditor(profile: $profile)
         }
-        .accessibilityIdentifier("editor.careAxes")
     }
 
     private var previewSection: some View {
+        // No container identifier here either (same aggregation caveat) —
+        // the UI tests assert the rendered rule texts individually.
         Section("Plain-language preview") {
             ForEach(
                 Array(CarePlainLanguageRenderer.rules(for: profile).enumerated()),
@@ -197,7 +203,6 @@ struct GarmentEditorView: View {
                     )
             }
         }
-        .accessibilityIdentifier("editor.preview")
     }
 
     // MARK: Actions

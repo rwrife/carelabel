@@ -54,6 +54,9 @@ struct WashAxisEditor: View {
                 Text("Hand wash only").tag(Mode.handWash)
                 Text("Machine wash").tag(Mode.machine)
             }
+            // navigationLink style: options open as a pushed list whose rows
+            // are reliably queryable (menu popups are not, in CI XCUITest).
+            .pickerStyle(.navigationLink)
             .accessibilityIdentifier("axis.wash.mode")
 
             if case .machine = profile.wash {
@@ -74,7 +77,6 @@ struct WashAxisEditor: View {
         } header: {
             AxisHeader(axis: .wash, value: CarePlainLanguageRenderer.washRule(profile.wash))
         }
-        .accessibilityIdentifier("axis.wash")
     }
 
     private var tempBinding: Binding<WashTemperature> {
@@ -138,12 +140,14 @@ struct BleachAxisEditor: View {
                 Text("Oxygen (color-safe) only").tag(Mode.oxygenOnly)
                 Text("Do not bleach").tag(Mode.doNotBleach)
             }
+            // navigationLink style: options open as a pushed list whose rows
+            // are reliably queryable (menu popups are not, in CI XCUITest).
+            .pickerStyle(.navigationLink)
             .accessibilityIdentifier("axis.bleach.mode")
             SymbolSheetLink(family: .bleach)
         } header: {
             AxisHeader(axis: .bleach, value: CarePlainLanguageRenderer.bleachRule(profile.bleach))
         }
-        .accessibilityIdentifier("axis.bleach")
     }
 }
 
@@ -211,6 +215,9 @@ struct DryAxisEditor: View {
                 Text("Do not tumble dry").tag(Mode.noTumble)
                 Text("Do not wring").tag(Mode.noWring)
             }
+            // navigationLink style: options open as a pushed list whose rows
+            // are reliably queryable (menu popups are not, in CI XCUITest).
+            .pickerStyle(.navigationLink)
             .accessibilityIdentifier("axis.dry.mode")
 
             if case .tumble = profile.dry {
@@ -233,7 +240,6 @@ struct DryAxisEditor: View {
         } header: {
             AxisHeader(axis: .dry, value: drySummary)
         }
-        .accessibilityIdentifier("axis.dry")
     }
 
     private var drySummary: String {
@@ -299,6 +305,9 @@ struct IronAxisEditor: View {
                 Text("Do not iron").tag(Mode.doNotIron)
                 Text("Iron with a temperature cap").tag(Mode.capped)
             }
+            // navigationLink style: options open as a pushed list whose rows
+            // are reliably queryable (menu popups are not, in CI XCUITest).
+            .pickerStyle(.navigationLink)
             .accessibilityIdentifier("axis.iron.mode")
 
             if case .cap = profile.iron {
@@ -313,7 +322,6 @@ struct IronAxisEditor: View {
         } header: {
             AxisHeader(axis: .iron, value: CarePlainLanguageRenderer.ironRule(profile.iron))
         }
-        .accessibilityIdentifier("axis.iron")
     }
 
     private var capBinding: Binding<IronTemperature> {
@@ -361,6 +369,9 @@ struct ProfessionalAxisEditor: View {
                 Text("Requires professional cleaning").tag(Mode.requires)
                 Text("Do not dry clean").tag(Mode.doNotDryClean)
             }
+            // navigationLink style: options open as a pushed list whose rows
+            // are reliably queryable (menu popups are not, in CI XCUITest).
+            .pickerStyle(.navigationLink)
             .accessibilityIdentifier("axis.professional.mode")
 
             if case .requires = profile.professional {
@@ -376,7 +387,6 @@ struct ProfessionalAxisEditor: View {
         } header: {
             AxisHeader(axis: .professionalCleaning, value: CarePlainLanguageRenderer.professionalRule(profile.professional))
         }
-        .accessibilityIdentifier("axis.professional")
     }
 
     private var kindBinding: Binding<ProfessionalKind> {

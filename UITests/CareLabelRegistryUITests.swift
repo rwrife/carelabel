@@ -94,28 +94,43 @@ final class CareLabelRegistryUITests: XCTestCase {
         // unambiguously the wash axis (the first axis in the form).
         app.swipeDown()
         app.swipeDown()
-        // Menu pickers expose the current value either in `value` or merged
-        // into `label` depending on presentation — match either.
+        // Match the picker's value cell EXACTLY. A CONTAINS predicate would
+        // also match each axis header, whose unknown-state rule text is
+        // "Care not recorded — check the label and add it" and precedes the
+        // picker in the hierarchy. Menu pickers expose the current value in
+        // `value` or as a standalone `label` depending on presentation.
         let valueText = app.descendants(matching: .any).matching(
-            NSPredicate(format: "value ==[c] %@ OR label CONTAINS[c] %@", "Not recorded", "not recorded")
+            NSPredicate(format: "label ==[c] %@ OR value ==[c] %@", "Not recorded", "Not recorded")
         ).firstMatch
         XCTAssertTrue(waitForElement(valueText), "picker \(identifier) not visible")
         valueText.tap()
     }
 
     private func selectPickerOption(_ option: String) {
-        // A SwiftUI menu-style Picker presents a system menu; items surface
-        // as buttons or static text depending on presentation.
+        // The axis pickers use .navigationLink style: options open as a
+        // pushed list whose rows are reliably queryable (menu popups were
+        // not, CI run 35780364211). Selecting usually auto-pops; if the list
+        // is still up after the tap, go back explicitly.
         let candidates = [
-            app.collectionViews.buttons[option],
+            app.tables.cells.staticTexts[option],
+            app.collectionViews.cells.staticTexts[option],
             app.tables.cells.buttons[option],
-            app.tables.buttons[option],
             app.buttons[option],
             app.staticTexts[option],
         ]
         for candidate in candidates {
-            if candidate.waitForExistence(timeout: 2) {
+            if candidate.waitForExistence(timeout: 3) {
                 candidate.firstMatch.tap()
+                // Selecting auto-pops the pushed list. If it did NOT (we are
+                // still on the picker list — its nav title is the picker
+                // label, e.g. "Wash"), pop via the back item ("Back" or the
+                // editor title "Add Garment").
+                if app.navigationBars["Wash"].exists {
+                    let back = app.navigationBars.buttons.matching(
+                        NSPredicate(format: "label == %@ OR label CONTAINS %@", "Back", "Add Garment")
+                    ).firstMatch
+                    if back.waitForExistence(timeout: 3) { back.tap() }
+                }
                 return
             }
         }
