@@ -194,9 +194,9 @@ final class CareLabelWorkspaceUITests: XCTestCase {
         XCTAssertTrue(logButton.label.contains("1"))
         logButton.tap()
 
-        // The log button stops being hittable once the group is logged
-        // (disabled state; SwiftUI buttons keep frames but drop hittability).
-        XCTAssertFalse(logButton.isHittable)
+        // The log button reports disabled once the group is logged (SwiftUI
+        // .disabled maps to AXEnabled=false; the frame stays hittable).
+        XCTAssertFalse(logButton.isEnabled)
 
         // Done pops back to the basket.
         let done = app.buttons["basket.report.done"]
@@ -265,8 +265,13 @@ final class CareLabelWorkspaceUITests: XCTestCase {
         )
 
         // Family filter: restrict to Ironing, iron rows show, wash rows gone.
+        // The toolbar Menu does not bridge its identifier (CI run
+        // 35965330787), so match the nav bar button by its accessibility
+        // label.
         replaceText(of: searchField, with: "")
-        let filter = app.buttons["symbols.family.filter"]
+        let filter = app.navigationBars.buttons.matching(
+            NSPredicate(format: "label CONTAINS %@", "Filter by family")
+        ).firstMatch
         XCTAssertTrue(waitForElement(filter), "family filter button missing")
         filter.tap()
         let ironOption = app.buttons["Ironing"].firstMatch

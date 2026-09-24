@@ -33,6 +33,7 @@ struct WashLogView: View {
             }
         }
         .navigationTitle("Wash Log")
+        .onAppear { model.reload() }
         .refreshable { model.reload() }
         .overlay {
             if let error = model.lastError {

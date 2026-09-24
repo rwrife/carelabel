@@ -60,6 +60,10 @@ struct SymbolReferenceScreen: View {
                     Image(systemName: "line.3.horizontal.decrease.circle")
                 }
                 .accessibilityLabel("Filter by family")
+                // NOTE: toolbar `Menu` does not bridge accessibilityIdentifier
+                // into the XCUITest tree (CI run 35965330787: same container
+                // caveat as sheet/section containers). Tests locate it by its
+                // accessibility label; the identifier stays for future tooling.
                 .accessibilityIdentifier("symbols.family.filter")
             }
         }

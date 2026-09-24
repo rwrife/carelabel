@@ -55,6 +55,10 @@ struct BasketView: View {
                 }
             }
         }
+        // The registry may have changed since this tab was last open (the
+        // Garments tab owns adds/edits/deletes) — refresh through the store
+        // seam every time the Basket appears so the picker is never stale.
+        .onAppear { model.reload() }
         .navigationTitle("Basket")
     }
 
