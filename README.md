@@ -65,6 +65,16 @@ This is a standard SwiftUI **iPhone-only** app today (`TARGETED_DEVICE_FAMILY = 
 - **Label-vs-decoding mode:** label photo on one surface, decoded plain-language rules + symbol reference on the other.
 - **Migration seam:** all layout decisions route through a single `CareWorkspaceLayout` value; when native dual-screen/fold APIs ship, only that adapter needs a real implementation. Today it resolves to the standard compact iPhone layout (and optional two-column regular width on larger iPhone sizes).
 
+### How the Basket split becomes the dual-screen span (issue #6)
+
+The Basket screen already realizes the picker|report split **structurally** through the seam, with zero dependence on unavailable fold APIs:
+
+- `CareWorkspaceLayout.presentation(for:)` is the single decision point. Every style→presentation mapping lives in `CareKit/CareContract.swift`; call sites never branch on size classes or device traits themselves.
+- `.compact` → `.stacked` (today's iPhone): the garment picker and plan controls occupy the screen, and "Evaluate" pushes the compatibility report as a sequential screen. This is what ships in every orientation the iPhone-only build runs in (`CareWorkspaceLayout.current == .compact`).
+- `.regularWidth` → `.splitPanels`: the picker renders in the leading panel and the live `BasketReportPanel` in the trailing panel — the exact "basket at the machine" roster-and-report pairing described above.
+
+When fold APIs ship, the migration is confined to two changes: (1) extend `CareWorkspaceLayout` to resolve `.regularWidth` from real screen geometry instead of the hard-coded `.compact`, and (2) span the two already-split panels across the outer displays. No view, model, or engine code in `BasketView`/`WardrobeWorkspaceModel`/`BasketEvaluationEngine` changes, and the iPhone-only target (`TARGETED_DEVICE_FAMILY = 1`) is untouched until an explicit iPad/dual-screen opt-in.
+
 ## iOS signing & release
 
 - Bundle identifier: `com.infinityball.carelabel` — App Store Connect registration status: **CREATED**.

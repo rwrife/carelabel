@@ -12,6 +12,8 @@ import UIKit
 struct GarmentDetailView: View {
     let garmentID: Int64?
     let model: GarmentRegistryModel
+    /// Issue #6: per-garment "last washed" surfaced on the detail view.
+    var lastWashed: Date? = nil
     var onEdit: () -> Void
     var onDelete: () -> Void
 
@@ -90,6 +92,10 @@ struct GarmentDetailView: View {
                 if let note = garment.fabricNote, !note.isEmpty {
                     LabeledContent("Fabric note", value: note)
                 }
+                LabeledContent(
+                    "Last washed",
+                    value: lastWashed.map(Self.dateString) ?? "Not washed"
+                )
                 if let updatedAt = garment.updatedAt {
                     LabeledContent("Updated", value: Self.dateString(from: updatedAt))
                 }

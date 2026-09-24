@@ -43,12 +43,39 @@ struct CareLabelApp: App {
     }
 }
 
-/// Root view: hosts the registry (issue #5) and injects the photo-store
-/// reader the list/detail thumbnails read through.
+/// Root view: issue #6 workspace shell. Four tabs — Garments (registry,
+/// issue #5), Basket (wash-safe planning), Wash Log, and Symbol Reference —
+/// share one `WardrobeWorkspaceModel` so a logged wash immediately surfaces
+/// as "last washed" on registry rows. The photo-store reader thumbnail
+/// reads still flow through the store seam.
 struct AppRootView: View {
+    @State private var workspace: WardrobeWorkspaceModel
+
+    init() {
+        _workspace = State(initialValue: WardrobeWorkspaceModel(store: CareLabelApp.store))
+    }
+
     var body: some View {
-        NavigationStack {
-            GarmentRegistryView(store: CareLabelApp.store)
+        TabView {
+            NavigationStack {
+                GarmentRegistryView(store: CareLabelApp.store, workspace: workspace)
+            }
+            .tabItem { Label("Garments", systemImage: "tshirt") }
+
+            NavigationStack {
+                BasketView(model: workspace)
+            }
+            .tabItem { Label("Basket", systemImage: "basketball") }
+
+            NavigationStack {
+                WashLogView(model: workspace)
+            }
+            .tabItem { Label("Wash Log", systemImage: "drop") }
+
+            NavigationStack {
+                SymbolReferenceScreen(model: workspace)
+            }
+            .tabItem { Label("Symbols", systemImage: "book.closed") }
         }
         .onAppear {
             RegistryThumbnailCache.shared.reader = { fileName in
