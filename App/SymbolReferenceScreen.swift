@@ -76,10 +76,11 @@ struct SymbolReferenceScreen: View {
                 Button {
                     showFamilyFilter = true
                 } label: {
-                    Label(
-                        model.symbolFamilyFilter.map { Text($0.title) } ?? Text("All families"),
-                        systemImage: "line.3.horizontal.decrease.circle"
-                    )
+                    HStack(spacing: 10) {
+                        Image(systemName: "line.3.horizontal.decrease.circle")
+                        Text(model.symbolFamilyFilter.map { $0.title } ?? "All families")
+                        Spacer()
+                    }
                     .frame(minHeight: 44)
                     .contentShape(Rectangle())
                 }
