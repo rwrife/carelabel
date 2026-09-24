@@ -264,12 +264,13 @@ final class CareLabelWorkspaceUITests: XCTestCase {
             "iron symbols should not match a tumble search"
         )
 
-        // Family filter: plain toolbar button opens a confirmationDialog
-        // (SwiftUI toolbar Menu never bridges into the XCUITest tree — CI
-        // runs 35965330787 / 35967213600; plain buttons + alert rows do).
+        // Family filter: a List-row Button (toolbar items on this searchable
+        // screen never bridged into the XCUITest tree — CI runs
+        // 35965330787 / 35967213600 / 35969146987) that opens a
+        // confirmationDialog whose option rows are queryable alert buttons.
         replaceText(of: searchField, with: "")
         let filter = app.buttons["symbols.family.filter"]
-        XCTAssertTrue(waitForElement(filter), "family filter button missing")
+        XCTAssertTrue(waitForElement(filter, timeout: 5), "family filter row missing")
         filter.tap()
         let ironOption = app.alerts.buttons["Ironing"].firstMatch
         XCTAssertTrue(ironOption.waitForExistence(timeout: 5), "family dialog did not open")

@@ -50,23 +50,6 @@ struct SymbolReferenceScreen: View {
             prompt: "Search glyph name or meaning"
         )
         .navigationTitle("Care Symbols")
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                // Plain Button + confirmationDialog instead of SwiftUI Menu:
-                // toolbar Menus do not bridge identifiers/labels into the
-                // XCUITest tree (CI runs 35965330787 / 35967213600), while
-                // plain toolbar Buttons do (`registry.add.toolbar`, issue #5)
-                // and confirmation-dialog option rows are reliably
-                // queryable (same mechanism as the delete alert).
-                Button {
-                    showFamilyFilter = true
-                } label: {
-                    Image(systemName: "line.3.horizontal.decrease.circle")
-                }
-                .accessibilityLabel("Filter by family")
-                .accessibilityIdentifier("symbols.family.filter")
-            }
-        }
         .confirmationDialog(
             "Filter by family",
             isPresented: $showFamilyFilter,
@@ -82,6 +65,30 @@ struct SymbolReferenceScreen: View {
 
     private var symbolList: some View {
         List {
+            // The family filter lives as a real List row, NOT a toolbar
+            // item: toolbar buttons on this searchable screen never bridged
+            // into the XCUITest tree across three CI attempts (runs
+            // 35965330787 / 35967213600 / 35969146987), while in-list
+            // buttons with identifiers do (editor.photo.test, basket.row.*).
+            // Confirmation-dialog option rows are queryable alert buttons
+            // (the issue #5 delete-confirmation mechanism).
+            Section {
+                Button {
+                    showFamilyFilter = true
+                } label: {
+                    Label(
+                        model.symbolFamilyFilter.map { Text($0.title) } ?? Text("All families"),
+                        systemImage: "line.3.horizontal.decrease.circle"
+                    )
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Filter by family")
+                .accessibilityValue(model.symbolFamilyFilter?.title ?? "All families")
+                .accessibilityIdentifier("symbols.family.filter")
+            }
+
             ForEach(model.symbolSections, id: \.family) { section in
                 // NOTE: no Section-level accessibilityIdentifier — it would
                 // cascade over child identifiers in the XCUITest hierarchy
