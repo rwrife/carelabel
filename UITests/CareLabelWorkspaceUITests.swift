@@ -264,18 +264,15 @@ final class CareLabelWorkspaceUITests: XCTestCase {
             "iron symbols should not match a tumble search"
         )
 
-        // Family filter: restrict to Ironing, iron rows show, wash rows gone.
-        // The toolbar Menu does not bridge its identifier (CI run
-        // 35965330787), so match the nav bar button by its accessibility
-        // label.
+        // Family filter: plain toolbar button opens a confirmationDialog
+        // (SwiftUI toolbar Menu never bridges into the XCUITest tree — CI
+        // runs 35965330787 / 35967213600; plain buttons + alert rows do).
         replaceText(of: searchField, with: "")
-        let filter = app.navigationBars.buttons.matching(
-            NSPredicate(format: "label CONTAINS %@", "Filter by family")
-        ).firstMatch
+        let filter = app.buttons["symbols.family.filter"]
         XCTAssertTrue(waitForElement(filter), "family filter button missing")
         filter.tap()
-        let ironOption = app.buttons["Ironing"].firstMatch
-        XCTAssertTrue(ironOption.waitForExistence(timeout: 5), "family menu did not open")
+        let ironOption = app.alerts.buttons["Ironing"].firstMatch
+        XCTAssertTrue(ironOption.waitForExistence(timeout: 5), "family dialog did not open")
         ironOption.tap()
 
         let ironRow = app.descendants(matching: .any).matching(

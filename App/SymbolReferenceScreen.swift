@@ -15,6 +15,7 @@ import SwiftUI
 @MainActor
 struct SymbolReferenceScreen: View {
     @State private var model: WardrobeWorkspaceModel
+    @State private var showFamilyFilter = false
 
     init(store: CareStore) {
         _model = State(initialValue: WardrobeWorkspaceModel(store: store))
@@ -51,21 +52,31 @@ struct SymbolReferenceScreen: View {
         .navigationTitle("Care Symbols")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Menu {
-                    Button("All families") { model.symbolFamilyFilter = nil }
-                    ForEach(CareSymbolFamily.allCases, id: \.self) { family in
-                        Button(family.title) { model.symbolFamilyFilter = family }
-                    }
+                // Plain Button + confirmationDialog instead of SwiftUI Menu:
+                // toolbar Menus do not bridge identifiers/labels into the
+                // XCUITest tree (CI runs 35965330787 / 35967213600), while
+                // plain toolbar Buttons do (`registry.add.toolbar`, issue #5)
+                // and confirmation-dialog option rows are reliably
+                // queryable (same mechanism as the delete alert).
+                Button {
+                    showFamilyFilter = true
                 } label: {
                     Image(systemName: "line.3.horizontal.decrease.circle")
                 }
                 .accessibilityLabel("Filter by family")
-                // NOTE: toolbar `Menu` does not bridge accessibilityIdentifier
-                // into the XCUITest tree (CI run 35965330787: same container
-                // caveat as sheet/section containers). Tests locate it by its
-                // accessibility label; the identifier stays for future tooling.
                 .accessibilityIdentifier("symbols.family.filter")
             }
+        }
+        .confirmationDialog(
+            "Filter by family",
+            isPresented: $showFamilyFilter,
+            titleVisibility: .visible
+        ) {
+            Button("All families") { model.symbolFamilyFilter = nil }
+            ForEach(CareSymbolFamily.allCases, id: \.self) { family in
+                Button(family.title) { model.symbolFamilyFilter = family }
+            }
+            Button("Cancel", role: .cancel) {}
         }
     }
 
