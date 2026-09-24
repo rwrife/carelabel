@@ -12,6 +12,10 @@ import UIKit
 @MainActor
 struct GarmentRegistryView: View {
     @State private var model: GarmentRegistryModel
+    /// Shared workspace model (issue #6): registry rows surface "last
+    /// washed" from the wash log, and registry mutations keep the basket
+    /// picker's selection in sync.
+    private let workspace: WardrobeWorkspaceModel?
 
     /// Presenting the editor with a new (unsaved) garment or an existing one.
     @State private var editorRequest: EditorRequest?
@@ -28,8 +32,9 @@ struct GarmentRegistryView: View {
         var garment: Garment
     }
 
-    init(store: CareStore) {
+    init(store: CareStore, workspace: WardrobeWorkspaceModel? = nil) {
         _model = State(initialValue: GarmentRegistryModel(store: store))
+        self.workspace = workspace
     }
 
     /// `searchable` needs a Binding; the model owns the text.
@@ -105,6 +110,7 @@ struct GarmentRegistryView: View {
                     GarmentDetailView(
                         garmentID: garment.id,
                         model: model,
+                        lastWashed: workspace?.lastWashedDate(for: garment),
                         onEdit: {
                             editorRequest = EditorRequest(garment: garment)
                             pendingPhotoRemoval = nil
@@ -114,7 +120,10 @@ struct GarmentRegistryView: View {
                         }
                     )
                 } label: {
-                    GarmentRow(garment: garment)
+                    GarmentRow(
+                        garment: garment,
+                        lastWashed: workspace?.lastWashedDate(for: garment)
+                    )
                 }
                 .swipeActions(edge: .trailing) {
                     Button(role: .destructive) {
@@ -162,6 +171,9 @@ struct GarmentRegistryView: View {
 // VoiceOver; each text keeps its natural label.
 struct GarmentRow: View {
     let garment: Garment
+    /// Most recent wash date (issue #6 "last washed" surfacing); nil when
+    /// the garment has never been washed or the log is unavailable.
+    var lastWashed: Date? = nil
 
     var body: some View {
         HStack(spacing: 12) {
@@ -176,6 +188,10 @@ struct GarmentRow: View {
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
+                Text(lastWashedSummary)
+                    .font(.footnote)
+                    .foregroundStyle(lastWashed == nil ? .secondary : .primary)
+                    .accessibilityIdentifier("registry.row.lastwashed.\(garment.id ?? -1)")
             }
         }
         .padding(.vertical, 4)
@@ -205,6 +221,11 @@ struct GarmentRow: View {
         } else {
             "\(garment.careProfile.recordedAxisCount) of \(CareAxis.allCases.count) care axes recorded"
         }
+    }
+
+    private var lastWashedSummary: String {
+        guard let lastWashed else { return "Never washed" }
+        return "Last washed \(WashLogDisplay.dateString(from: lastWashed))"
     }
 }
 

@@ -20,6 +20,12 @@
 		A10000000000000000000112 /* SymbolReferenceSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000212 /* SymbolReferenceSheet.swift */; };
 		A10000000000000000000113 /* TestPhotoSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000213 /* TestPhotoSource.swift */; };
 		A10000000000000000000114 /* CareLabelRegistryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000214 /* CareLabelRegistryUITests.swift */; };
+		A10000000000000000000115 /* WardrobeWorkspaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000215 /* WardrobeWorkspaceModel.swift */; };
+		A10000000000000000000116 /* WashLogDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000216 /* WashLogDisplay.swift */; };
+		A10000000000000000000117 /* BasketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000217 /* BasketView.swift */; };
+		A10000000000000000000118 /* WashLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000218 /* WashLogView.swift */; };
+		A10000000000000000000119 /* SymbolReferenceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000219 /* SymbolReferenceScreen.swift */; };
+		A10000000000000000000120 /* CareLabelWorkspaceUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000220 /* CareLabelWorkspaceUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +51,12 @@
 		A10000000000000000000212 /* SymbolReferenceSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolReferenceSheet.swift; sourceTree = "<group>"; };
 		A10000000000000000000213 /* TestPhotoSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPhotoSource.swift; sourceTree = "<group>"; };
 		A10000000000000000000214 /* CareLabelRegistryUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CareLabelRegistryUITests.swift; sourceTree = "<group>"; };
+		A10000000000000000000215 /* WardrobeWorkspaceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WardrobeWorkspaceModel.swift; sourceTree = "<group>"; };
+		A10000000000000000000216 /* WashLogDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WashLogDisplay.swift; sourceTree = "<group>"; };
+		A10000000000000000000217 /* BasketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketView.swift; sourceTree = "<group>"; };
+		A10000000000000000000218 /* WashLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WashLogView.swift; sourceTree = "<group>"; };
+		A10000000000000000000219 /* SymbolReferenceScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolReferenceScreen.swift; sourceTree = "<group>"; };
+		A10000000000000000000220 /* CareLabelWorkspaceUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CareLabelWorkspaceUITests.swift; sourceTree = "<group>"; };
 		A10000000000000000000204 /* CareLabel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CareLabel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10000000000000000000205 /* CareLabelUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CareLabelUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -85,6 +97,11 @@
 				A10000000000000000000210 /* GarmentDetailView.swift */,
 				A10000000000000000000211 /* CareAxisEditors.swift */,
 				A10000000000000000000212 /* SymbolReferenceSheet.swift */,
+				A10000000000000000000219 /* SymbolReferenceScreen.swift */,
+				A10000000000000000000215 /* WardrobeWorkspaceModel.swift */,
+				A10000000000000000000217 /* BasketView.swift */,
+				A10000000000000000000218 /* WashLogView.swift */,
+				A10000000000000000000216 /* WashLogDisplay.swift */,
 				A10000000000000000000213 /* TestPhotoSource.swift */,
 				A10000000000000000000206 /* UIKitPhotoDownsampler.swift */,
 			);
@@ -96,6 +113,7 @@
 			children = (
 				A10000000000000000000203 /* CareLabelLaunchTests.swift */,
 				A10000000000000000000214 /* CareLabelRegistryUITests.swift */,
+				A10000000000000000000220 /* CareLabelWorkspaceUITests.swift */,
 			);
 			path = UITests;
 			sourceTree = "<group>";
@@ -195,6 +213,11 @@
 				A10000000000000000000112 /* SymbolReferenceSheet.swift in Sources */,
 				A10000000000000000000113 /* TestPhotoSource.swift in Sources */,
 				A10000000000000000000106 /* UIKitPhotoDownsampler.swift in Sources */,
+				A10000000000000000000115 /* WardrobeWorkspaceModel.swift in Sources */,
+				A10000000000000000000116 /* WashLogDisplay.swift in Sources */,
+				A10000000000000000000117 /* BasketView.swift in Sources */,
+				A10000000000000000000118 /* WashLogView.swift in Sources */,
+				A10000000000000000000119 /* SymbolReferenceScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,6 +227,7 @@
 			files = (
 				A10000000000000000000103 /* CareLabelLaunchTests.swift in Sources */,
 				A10000000000000000000114 /* CareLabelRegistryUITests.swift in Sources */,
+				A10000000000000000000120 /* CareLabelWorkspaceUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

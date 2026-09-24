@@ -28,10 +28,35 @@ public enum CareWorkspaceLayoutStyle: String, CaseIterable, Sendable {
     case regularWidth
 }
 
+/// What a workspace screen should render for a resolved layout style
+/// (issue #6). `stacked` is today's iPhone behavior: picker and report are
+/// sequential screens/sections. `splitPanels` is the documented iPhone Duo
+/// design target realized early: the garment picker occupies one surface
+/// and the live compatibility report the other — when fold APIs ship, the
+/// split panels span the two screens with no call-site changes.
+public enum CareWorkspacePresentation: String, CaseIterable, Sendable {
+    case stacked
+    case splitPanels
+}
+
 public enum CareWorkspaceLayout {
     /// The style the iPhone-only MVP resolves to. Changing dual-screen behavior
     /// later must only change this resolution, not call sites.
     public static let current: CareWorkspaceLayoutStyle = .compact
+
+    /// The single resolution seam (issue #6): screens never choose stacked
+    /// vs split layout themselves — they ask this. Compact (today's iPhone
+    /// in every orientation the MVP ships) resolves to `stacked`; the
+    /// regular-width style reserved for larger iPhone sizes and the future
+    /// dual-screen span resolves to `splitPanels`.
+    public static func presentation(
+        for style: CareWorkspaceLayoutStyle = current
+    ) -> CareWorkspacePresentation {
+        switch style {
+        case .compact: .stacked
+        case .regularWidth: .splitPanels
+        }
+    }
 }
 
 /// The user-initiated export forms promised by the README (backup/restore JSON
