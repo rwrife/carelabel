@@ -267,12 +267,15 @@ final class CareLabelWorkspaceUITests: XCTestCase {
         // Family filter: a List-row Button (toolbar items on this searchable
         // screen never bridged into the XCUITest tree — CI runs
         // 35965330787 / 35967213600 / 35969146987) that opens a
-        // confirmationDialog whose option rows are queryable alert buttons.
+        // confirmationDialog. On iPhone the dialog presents as an action
+        // SHEET, not an alert (run 35971701876: alerts.buttons found
+        // nothing); query the option globally — no other button in the
+        // tree carries the "Ironing" label (section headers are StaticText).
         replaceText(of: searchField, with: "")
         let filter = app.buttons["symbols.family.filter"]
         XCTAssertTrue(waitForElement(filter, timeout: 5), "family filter row missing")
         filter.tap()
-        let ironOption = app.alerts.buttons["Ironing"].firstMatch
+        let ironOption = app.buttons["Ironing"].firstMatch
         XCTAssertTrue(ironOption.waitForExistence(timeout: 5), "family dialog did not open")
         ironOption.tap()
 
