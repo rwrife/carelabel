@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Poll App Store Connect build processing state until COMPLETE, using only stdlib/openssl."""
+"""Poll App Store Connect build processing until VALID, using only stdlib/openssl."""
 
 from __future__ import annotations
 
@@ -11,6 +11,21 @@ import sys
 import time
 import urllib.error
 import urllib.request
+
+# App Store Connect's Build.Attributes.processingState terminal success is
+# VALID. COMPLETE is retained for compatibility with older/mocked payloads.
+SUCCESS_PROCESSING_STATES = {"VALID", "COMPLETE"}
+FAILURE_PROCESSING_STATES = {"FAILED", "INVALID"}
+
+
+def processing_state_result(state: str) -> str:
+    """Classify an ASC build processing state as success/failure/pending."""
+    if state in SUCCESS_PROCESSING_STATES:
+        return "success"
+    if state in FAILURE_PROCESSING_STATES:
+        return "failure"
+    return "pending"
+
 
 
 def b64url(data: bytes) -> str:
@@ -140,7 +155,8 @@ def main() -> int:
                     f"Attempt {attempt}/{attempts}: build {number} (id={build['id']}) "
                     f"state={state} uploaded={uploaded}"
                 )
-                if state == "COMPLETE":
+                result = processing_state_result(state)
+                if result == "success":
                     print("App Store Connect processing complete.")
                     out_path = os.environ.get("GITHUB_OUTPUT")
                     if out_path:
@@ -149,7 +165,7 @@ def main() -> int:
                             handle.write(f"processing_state={state}\n")
                             handle.write(f"build_number={number}\n")
                     return 0
-                if state in {"FAILED", "INVALID"}:
+                if result == "failure":
                     print(f"Build failed processing with state: {state}", file=sys.stderr)
                     return 2
         time.sleep(sleep_seconds)

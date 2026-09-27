@@ -1,7 +1,24 @@
 import struct
 import unittest
 
-from Scripts.poll_asc_build import der_to_raw
+from Scripts.poll_asc_build import der_to_raw, processing_state_result
+
+
+class ProcessingStateTests(unittest.TestCase):
+    def test_asc_valid_is_terminal_success(self) -> None:
+        self.assertEqual(processing_state_result("VALID"), "success")
+
+    def test_complete_is_retained_as_terminal_success(self) -> None:
+        self.assertEqual(processing_state_result("COMPLETE"), "success")
+
+    def test_failed_and_invalid_are_terminal_failures(self) -> None:
+        self.assertEqual(processing_state_result("FAILED"), "failure")
+        self.assertEqual(processing_state_result("INVALID"), "failure")
+
+    def test_processing_and_unknown_remain_pending(self) -> None:
+        self.assertEqual(processing_state_result("PROCESSING"), "pending")
+        self.assertEqual(processing_state_result("UNKNOWN"), "pending")
+
 
 
 def encode_der(r: bytes, s: bytes) -> bytes:
