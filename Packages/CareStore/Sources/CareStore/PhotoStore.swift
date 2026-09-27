@@ -57,6 +57,19 @@ public struct PhotoStore: Sendable {
         return PhotoReference(fileName: fileName)
     }
 
+    /// Restores bytes that already came from this photo store through a
+    /// backup archive. Backup payloads contain the app's downscaled JPEG,
+    /// not the user's original, so decoding/re-encoding it again would lose
+    /// quality on every backup cycle.
+    @discardableResult
+    public func restorePhoto(data: Data) throws -> PhotoReference {
+        let fileName = "photo-\(UUID().uuidUpperCaseCompact).jpg"
+        let url = try fileURL(named: fileName)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        try data.write(to: url, options: .withoutOverwriting)
+        return PhotoReference(fileName: fileName)
+    }
+
     public func data(for reference: PhotoReference) throws -> Data {
         let url = try fileURL(named: reference.fileName)
         guard FileManager.default.fileExists(atPath: url.path) else {
