@@ -26,6 +26,9 @@
 		A10000000000000000000118 /* WashLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000218 /* WashLogView.swift */; };
 		A10000000000000000000119 /* SymbolReferenceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000219 /* SymbolReferenceScreen.swift */; };
 		A10000000000000000000120 /* CareLabelWorkspaceUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000220 /* CareLabelWorkspaceUITests.swift */; };
+		A10000000000000000000121 /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000221 /* SettingsModel.swift */; };
+		A10000000000000000000122 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000222 /* SettingsView.swift */; };
+		A10000000000000000000123 /* CareLabelSettingsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000223 /* CareLabelSettingsUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +60,9 @@
 		A10000000000000000000218 /* WashLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WashLogView.swift; sourceTree = "<group>"; };
 		A10000000000000000000219 /* SymbolReferenceScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolReferenceScreen.swift; sourceTree = "<group>"; };
 		A10000000000000000000220 /* CareLabelWorkspaceUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CareLabelWorkspaceUITests.swift; sourceTree = "<group>"; };
+		A10000000000000000000221 /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
+		A10000000000000000000222 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A10000000000000000000223 /* CareLabelSettingsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CareLabelSettingsUITests.swift; sourceTree = "<group>"; };
 		A10000000000000000000204 /* CareLabel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CareLabel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10000000000000000000205 /* CareLabelUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CareLabelUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -104,6 +110,8 @@
 				A10000000000000000000216 /* WashLogDisplay.swift */,
 				A10000000000000000000213 /* TestPhotoSource.swift */,
 				A10000000000000000000206 /* UIKitPhotoDownsampler.swift */,
+				A10000000000000000000221 /* SettingsModel.swift */,
+				A10000000000000000000222 /* SettingsView.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -114,6 +122,7 @@
 				A10000000000000000000203 /* CareLabelLaunchTests.swift */,
 				A10000000000000000000214 /* CareLabelRegistryUITests.swift */,
 				A10000000000000000000220 /* CareLabelWorkspaceUITests.swift */,
+				A10000000000000000000223 /* CareLabelSettingsUITests.swift */,
 			);
 			path = UITests;
 			sourceTree = "<group>";
@@ -218,6 +227,8 @@
 				A10000000000000000000117 /* BasketView.swift in Sources */,
 				A10000000000000000000118 /* WashLogView.swift in Sources */,
 				A10000000000000000000119 /* SymbolReferenceScreen.swift in Sources */,
+				A10000000000000000000121 /* SettingsModel.swift in Sources */,
+				A10000000000000000000122 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,6 +239,7 @@
 				A10000000000000000000103 /* CareLabelLaunchTests.swift in Sources */,
 				A10000000000000000000114 /* CareLabelRegistryUITests.swift in Sources */,
 				A10000000000000000000120 /* CareLabelWorkspaceUITests.swift in Sources */,
+				A10000000000000000000123 /* CareLabelSettingsUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

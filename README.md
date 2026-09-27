@@ -53,9 +53,9 @@ Most people ruin clothes the slow way: a wool sweater shrinks, a printed tee cra
 ## Privacy, permissions, and data storage
 
 - **Local-first:** all garments, photos, and logs live in app-private storage (SQLite via GRDB + app container photos). The MVP makes **no network requests at all**; there is a CI-enforced zero-network gate.
-- **Permissions:** Photo Library add-only (or camera capture) for label photos; optional notifications only if a future wash-reminder feature is requested. No location, contacts, or health permissions.
-- **Export/backup:** user-initiated JSON archive (full fidelity) and CSV summary, via the system share sheet; restore is explicit and previewed before merge.
-- **Data ownership:** nothing leaves the device unless the user exports it. Deleting the app deletes the data.
+- **Permissions:** PhotosPicker uses the out-of-process system picker (no Photo Library read access granted to the app); imported label photos are downscaled immediately and written to the app's private container. No camera permission required for the picker, no location, contacts, or health permissions.
+- **Export/backup:** user-initiated JSON archive (full fidelity with embedded photos) and CSV summary, via the system share sheet; restore is explicit and previewed before merge with atomic rollback on error.
+- **Data ownership:** nothing leaves the device unless the user exports it. Deleting the app deletes all data.
 
 ## iPhone Duo dual-screen design target
 
